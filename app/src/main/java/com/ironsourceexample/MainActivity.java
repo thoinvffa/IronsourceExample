@@ -12,6 +12,8 @@ import com.ironsource.mediationsdk.sdk.InterstitialListener;
 import com.superad.ironsource.IronSourceAdManager;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String appKey = "85460dcd";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,8 +22,22 @@ public class MainActivity extends AppCompatActivity {
         loadAd();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IronSourceAdManager.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        IronSourceAdManager.onPause(this);
+    }
+
     private void loadAd() {
-        IronSourceAdManager.init(this, "102822129");
+        Toast.makeText(this, "loadAd", Toast.LENGTH_SHORT).show();
+        IronSourceAdManager.debugMode = true;
+        IronSourceAdManager.init(this, appKey);
         IronSourceAdManager.loadInterstitial(new InterstitialListener() {
             @Override
             public void onInterstitialAdReady() {
@@ -31,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onInterstitialAdLoadFailed(IronSourceError ironSourceError) {
-                Toast.makeText(MainActivity.this, "onInterstitialAdLoadFailed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "onInterstitialAdLoadFailed: " + ironSourceError.getErrorMessage(), Toast.LENGTH_LONG).show();
 
             }
 
@@ -54,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onInterstitialAdShowFailed(IronSourceError ironSourceError) {
-                Toast.makeText(MainActivity.this, "onInterstitialAdShowFailed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "onInterstitialAdShowFailed: "
+                        + ironSourceError.getErrorCode(), Toast.LENGTH_LONG).show();
 
             }
 
