@@ -1,0 +1,3 @@
+rootProject.name = "IronsourceExample"
+include ':app'
+include ':ad-ironsource'
